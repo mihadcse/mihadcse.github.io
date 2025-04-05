@@ -84,21 +84,21 @@ const Projects = () => {
     },
     {
       title: "Career Sync",
-      description: "A MERN-based job portal where companies can post jobs and job seekers can apply.",
+      description: "A Team project. A MERN-based job portal where companies can post jobs and job seekers can apply.",
       link: "https://github.com/mihadcse/Career_Sync",
       image: "/career_sync.png",
       video: "",
     },
     {
       title: "ClearAid",
-      description: "A Firebase-powered donation platform for NGOs to manage donation programs.",
+      description: "A Team project. A Firebase-powered donation platform for NGOs to manage donation programs.",
       link: "https://github.com/nrzn77/altruistic",
       image: "/clearaid.png",
       video: "https://youtu.be/CZpSJvk2IbM?si=qeOiEd8yF4JYwXc2", // Add YouTube link if available
     },
     {
       title: "BookPlanGo",
-      description: "A Java app to plan and manage book reading schedules efficiently.",
+      description: "A Team project. A Java app to plan and manage book reading schedules efficiently.",
       link: "https://github.com/mihadcse/BookPlanGo",
       image: "/bookplango.png",
     },
@@ -110,7 +110,7 @@ const Projects = () => {
     },
     {
       title: "Space Shooter",
-      description: "A 2D space shooter game built using C++ and SFML.",
+      description: "A Team project. A 2D space shooter game built using C++ and SFML.",
       link: "https://github.com/mihadcse/OOP_LAB_PROJECT_2_1-SPACE_SHOOTER",
       image: "/spaceshooter.png",
       video: "https://youtu.be/vbWuK4hSrFo?si=q8i3rPEmLQJFXjs1",
