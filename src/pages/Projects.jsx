@@ -87,7 +87,7 @@ const Projects = () => {
       description: "A Team project. A MERN-based job portal where companies can post jobs and job seekers can apply.",
       link: "https://github.com/mihadcse/Career_Sync",
       image: "/career_sync.png",
-      video: "",
+      video: "https://youtu.be/kMB9uJOQhzA?si=l4K3d6rQZxx-jWg_",
     },
     {
       title: "ClearAid",
