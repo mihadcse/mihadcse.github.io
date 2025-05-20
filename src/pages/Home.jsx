@@ -60,10 +60,7 @@ const Home = () => {
         <Connect />
       </div> */}
       <div className='flex justify-center items-center'>
-        <img
-          src="https://visitor-badge.glitch.me/badge?page_id=mihadcse.mihadcse.github.io"
-          alt="visitor badge"
-        />
+        <a className='transform scale-125' href="https://visitorbadge.io/status?path=https%3A%2F%2Fmihadcse.github.io%2F"><img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fmihadcse.github.io%2F&label=Total%20Visits&labelColor=%23697689&countColor=%232ccce4" /></a>
 
       </div>
       <br />
