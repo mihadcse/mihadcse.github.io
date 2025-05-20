@@ -1,15 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Projects from './Projects';
 import Skills from './Skills';
 
+import { CounterAPI } from 'counterapi';
 
 const Home = () => {
-
-  const birthDate = new Date(2001, 10, 7); 
+  const [visits, setVisits] = useState(null);
+  const birthDate = new Date(2001, 10, 7);
   const today = new Date();
 
   let years = today.getFullYear() - birthDate.getFullYear();
   let months = today.getMonth() - birthDate.getMonth();
+
+  useEffect(() => {
+    const fetchVisits = async () => {
+      try {
+        const counter = new CounterAPI({ namespace: 'mihadcse-website' });
+        const data = await counter.hit('visits'); // increments + gets value
+        setVisits(data.value);
+      } catch (error) {
+        console.error("CounterAPI error:", error);
+      }
+    };
+
+    fetchVisits();
+  }, []);
 
   // Adjust if the birthday hasn't occurred yet this year
   if (months < 0) {
@@ -60,6 +75,9 @@ const Home = () => {
       {/* <div id="connect" className="mt-16">
         <Connect />
       </div> */}
+      <div>
+        <p>This site has been visited {visits ?? '...'} times.</p>
+      </div>
     </div>
   );
 }
