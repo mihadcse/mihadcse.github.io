@@ -4,7 +4,7 @@ import Skills from './Skills';
 
 const Home = () => {
 
-  const birthDate = new Date(2001, 10, 7);
+  const birthDate = new Date(2001, 9, 7);
   const today = new Date();
 
   let years = today.getFullYear() - birthDate.getFullYear();
