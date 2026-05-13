@@ -543,6 +543,106 @@
   .social-btn.fb:hover { border-color: #1877f2; color: #1877f2; box-shadow: 0 6px 20px rgba(24,119,242,0.2); }
   .social-btn.ig:hover { border-color: #e1306c; color: #e1306c; box-shadow: 0 6px 20px rgba(225,48,108,0.2); }
 
+  /* ─── CV PREVIEW MODAL ─── */
+  .cv-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(2, 6, 12, 0.72);
+    backdrop-filter: blur(18px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .cv-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .cv-modal-panel {
+    width: min(1100px, 100%);
+    height: min(88vh, 920px);
+    background: linear-gradient(180deg, rgba(12,21,37,0.98), rgba(6,11,20,0.98));
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .cv-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .cv-modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .cv-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .cv-modal-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #000;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .cv-modal-close {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .cv-modal-body {
+    min-height: 0;
+    background: #0b1220;
+  }
+
+  .cv-modal-body iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #fff;
+  }
+
+  body.modal-open {
+    overflow: hidden;
+  }
+
   /* ─── COPYRIGHT ─── */
   .copyright {
     position: relative; z-index: 1;
@@ -622,7 +722,7 @@
     <li><a href="#hero">Home</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#projects">Projects</a></li>
-    <li><a href="/Syed-Huzzatullah-Mihad-FlowCV%29.pdf" download="Syed-Huzzatullah-Mihad-CV.pdf">CV</a></li>
+    <li><a href="#cv" onclick="openCvPreview(event)">CV</a></li>
     <li><a href="#connect">Connect</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Toggle menu">
@@ -634,7 +734,7 @@
   <a href="#hero" onclick="closeMobile()">Home</a>
   <a href="#skills" onclick="closeMobile()">Skills</a>
   <a href="#projects" onclick="closeMobile()">Projects</a>
-  <a href="/Syed-Huzzatullah-Mihad-FlowCV%29.pdf" download="Syed-Huzzatullah-Mihad-CV.pdf" onclick="closeMobile()">CV</a>
+  <a href="#cv" onclick="openCvPreview(event); closeMobile()">CV</a>
   <a href="#connect" onclick="closeMobile()">Connect</a>
 </div>
 
@@ -963,6 +1063,24 @@
   © <span id="year"></span> Syed Huzzatullah Mihad. All rights reserved.
 </div>
 
+<div class="cv-modal" id="cv-modal" aria-hidden="true">
+  <div class="cv-modal-panel" role="dialog" aria-modal="true" aria-labelledby="cv-modal-title">
+    <div class="cv-modal-header">
+      <div class="cv-modal-title" id="cv-modal-title">Curriculum Vitae</div>
+      <div class="cv-modal-actions">
+        <a class="cv-modal-download" href="/Syed-Huzzatullah-Mihad-FlowCV%29.pdf" download="Syed-Huzzatullah-Mihad-CV.pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download CV
+        </a>
+        <button class="cv-modal-close" type="button" aria-label="Close CV preview" onclick="closeCvPreview()">&times;</button>
+      </div>
+    </div>
+    <div class="cv-modal-body">
+      <iframe title="CV preview" src="/Syed-Huzzatullah-Mihad-FlowCV%29.pdf"></iframe>
+    </div>
+  </div>
+</div>
+
 <script>
   // ── Age calc
   (function() {
@@ -989,6 +1107,35 @@
     hamburger.classList.remove('open');
     mobileMenu.classList.remove('show');
   }
+
+  const cvModal = document.getElementById('cv-modal');
+
+  function openCvPreview(event) {
+    if (event) {
+      event.preventDefault();
+    }
+    cvModal.classList.add('show');
+    cvModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeCvPreview() {
+    cvModal.classList.remove('show');
+    cvModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+  }
+
+  cvModal.addEventListener('click', (event) => {
+    if (event.target === cvModal) {
+      closeCvPreview();
+    }
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && cvModal.classList.contains('show')) {
+      closeCvPreview();
+    }
+  });
 
   // ── Scroll animation
   const observer = new IntersectionObserver((entries) => {
