@@ -1,43 +1,1032 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/mihad.jpg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta 
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/mihad.jpg" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Syed Huzzatullah Mihad — CSE Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Sh_Mihad</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+  :root {
+    --bg: #060b14;
+    --bg2: #0c1525;
+    --bg3: #0f1e35;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --text: #e8f0fe;
+    --muted: #8899b4;
+    --border: rgba(0,212,255,0.15);
+    --card: rgba(12,21,37,0.85);
+    --glow: rgba(0,212,255,0.25);
+    --radius: 16px;
+  }
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  html { scroll-behavior: smooth; }
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* ─── GRADIENT MESH ─── */
+  .mesh {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 10% 10%, rgba(0,212,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 90% 80%, rgba(124,58,237,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(16,185,129,0.04) 0%, transparent 70%);
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    height: 68px;
+    background: rgba(6,11,20,0.75);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.25s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1.5px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.25s;
+    transform-origin: left;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* ─── HAMBURGER ─── */
+  .hamburger {
+    display: none;
+    flex-direction: column; gap: 5px; cursor: pointer;
+    background: none; border: none; padding: 4px;
+  }
+
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed; top: 68px; left: 0; right: 0; z-index: 99;
+    background: rgba(6,11,20,0.97);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 2rem 2rem;
+    flex-direction: column; gap: 0;
+    transform: translateY(-10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+  }
+
+  .mobile-menu.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .mobile-menu a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+    display: block;
+    transition: color 0.2s;
+  }
+
+  .mobile-menu a:hover { color: var(--accent); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: clamp(5rem, 12vw, 8rem) clamp(1.5rem, 6vw, 5rem) clamp(3rem, 6vw, 4rem);
+  }
+
+  .hero-inner {
+    max-width: 1200px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block; width: 32px; height: 1.5px;
+    background: var(--accent);
+  }
+
+  .hero-greeting {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.2rem;
+    background: linear-gradient(135deg, #ffffff 0%, var(--accent) 50%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-title {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--muted);
+    font-weight: 400;
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  .hero-title strong { color: var(--text); font-weight: 500; }
+
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    box-shadow: 0 0 24px rgba(0,212,255,0.35);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 36px rgba(0,212,255,0.55);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .hero-avatar-wrap {
+    position: relative;
+  }
+
+  .hero-avatar-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent), var(--accent2), var(--accent3), var(--accent));
+    animation: spin 6s linear infinite;
+    z-index: 0;
+  }
+
+  .hero-avatar-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    background: var(--bg);
+    z-index: 1;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hero-avatar {
+    position: relative; z-index: 2;
+    width: clamp(160px, 22vw, 260px);
+    height: clamp(160px, 22vw, 260px);
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+  }
+
+  /* ─── DETAILS STRIP ─── */
+  .details-strip {
+    position: relative; z-index: 1;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem clamp(1.5rem, 6vw, 5rem);
+  }
+
+  .details-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .detail-item {
+    display: flex; flex-direction: column; gap: 0.25rem;
+  }
+
+  .detail-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .detail-value {
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    position: relative; z-index: 1;
+    padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 6vw, 5rem);
+  }
+
+  .section-inner {
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .section-tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+
+  .section-tag::before {
+    content: '';
+    display: inline-block; width: 24px; height: 1.5px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 3rem;
+    color: var(--text);
+  }
+
+  /* ─── SKILLS ─── */
+  #skills { background: var(--bg); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+    transition: all 0.3s;
+    cursor: default;
+    text-align: center;
+    backdrop-filter: blur(8px);
+  }
+
+  .skill-card:hover {
+    border-color: var(--accent);
+    background: rgba(0,212,255,0.06);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0,212,255,0.12);
+  }
+
+  .skill-card img {
+    width: 44px; height: 44px; object-fit: contain;
+    filter: brightness(1.1);
+  }
+
+  .skill-card span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .skill-card:hover span { color: var(--text); }
+
+  /* ─── PROJECTS ─── */
+  #projects { background: var(--bg2); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.3s;
+    backdrop-filter: blur(8px);
+    display: flex; flex-direction: column;
+  }
+
+  .project-card:hover {
+    border-color: rgba(0,212,255,0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,212,255,0.1);
+  }
+
+  .project-img {
+    width: 100%; height: 190px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s;
+  }
+
+  .project-card:hover .project-img { transform: scale(1.04); }
+
+  .project-img-wrap { overflow: hidden; }
+
+  .project-body {
+    padding: 1.4rem 1.5rem 1.5rem;
+    flex: 1;
+    display: flex; flex-direction: column;
+  }
+
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .project-desc {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-links {
+    display: flex; gap: 0.75rem; align-items: center;
+  }
+
+  .project-link {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .project-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .project-link.yt:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+
+  .project-link svg { width: 14px; height: 14px; }
+
+  /* ─── CONNECT / FOOTER ─── */
+  #connect {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+
+  .connect-wrap {
+    max-width: 640px; text-align: center; margin: 0 auto;
+  }
+
+  .connect-email {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 0.75rem 1.75rem;
+    border: 1.5px solid var(--accent);
+    border-radius: 50px;
+    margin: 1.5rem 0 2.5rem;
+    transition: all 0.25s;
+  }
+
+  .connect-email:hover {
+    background: rgba(0,212,255,0.08);
+    box-shadow: 0 0 24px rgba(0,212,255,0.2);
+  }
+
+  .social-row {
+    display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+  }
+
+  .social-btn {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.25s;
+  }
+
+  .social-btn svg { width: 16px; height: 16px; }
+
+  .social-btn:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 6px 20px rgba(0,212,255,0.15);
+  }
+
+  .social-btn.li:hover { border-color: #0a66c2; color: #0a66c2; box-shadow: 0 6px 20px rgba(10,102,194,0.2); }
+  .social-btn.gh:hover { border-color: #e8e8e8; color: #e8e8e8; }
+  .social-btn.yt:hover { border-color: #ef4444; color: #ef4444; box-shadow: 0 6px 20px rgba(239,68,68,0.2); }
+  .social-btn.fb:hover { border-color: #1877f2; color: #1877f2; box-shadow: 0 6px 20px rgba(24,119,242,0.2); }
+  .social-btn.ig:hover { border-color: #e1306c; color: #e1306c; box-shadow: 0 6px 20px rgba(225,48,108,0.2); }
+
+  /* ─── COPYRIGHT ─── */
+  .copyright {
+    position: relative; z-index: 1;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 1.5rem 2rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* ─── VISITOR BADGE ─── */
+  .visitor-row {
+    display: flex; justify-content: center;
+    margin-top: 2rem;
+  }
+
+  /* ─── DIVIDER LINE ─── */
+  .divider {
+    position: relative; z-index: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .hero-avatar-wrap {
+      order: -1;
+      margin: 0 auto;
+    }
+    .hero-eyebrow { justify-content: center; }
+    .hero-title { max-width: 100%; }
+    .hero-actions { justify-content: center; }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .mobile-menu { display: flex; }
+
+    .projects-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 380px) {
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ─── ACTIVE NAV ─── */
+  .nav-links a.active { color: var(--accent); }
+  .nav-links a.active::after { transform: scaleX(1); }
+</style>
+</head>
+<body>
+
+<div class="mesh"></div>
+
+<!-- ── NAV ── -->
+<nav id="main-nav">
+  <a href="#hero" class="nav-logo">SH Mihad</a>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#hero" onclick="closeMobile()">Home</a>
+  <a href="#skills" onclick="closeMobile()">Skills</a>
+  <a href="#projects" onclick="closeMobile()">Projects</a>
+  <a href="#connect" onclick="closeMobile()">Connect</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Portfolio 2026</p>
+      <p class="hero-greeting">As-salamu alaykum Warahmatullah 👋</p>
+      <h1 class="hero-name">Syed Huzzatullah<br>Mihad</h1>
+      <p class="hero-title">
+        Undergraduate in <strong>Computer Science & Engineering</strong> at
+        <strong>Islamic University of Technology</strong>, Gazipur, Bangladesh.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          View Projects
+        </a>
+        <a href="#connect" class="btn btn-outline">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Get in Touch
+        </a>
+      </div>
+    </div>
+    <div class="hero-avatar-wrap">
+      <img src="https://mihadcse.github.io/mihad2.jpeg" alt="Syed Huzzatullah Mihad" class="hero-avatar" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22260%22 height=%22260%22 viewBox=%220 0 260 260%22%3E%3Crect width=%22260%22 height=%22260%22 fill=%22%230c1525%22/%3E%3Ccircle cx=%22130%22 cy=%22100%22 r=%2248%22 fill=%22%2300d4ff22%22/%3E%3Ccircle cx=%22130%22 cy=%22100%22 r=%2238%22 fill=%22%2300d4ff44%22/%3E%3Cellipse cx=%22130%22 cy=%22220%22 rx=%2280%22 ry=%2260%22 fill=%22%2200d4ff22%22/%3E%3C/svg%3E'" />
+    </div>
+  </div>
+</section>
+
+<!-- ── DETAILS STRIP ── -->
+<div class="details-strip fade-up">
+  <div class="details-grid">
+    <div class="detail-item">
+      <span class="detail-label">Age</span>
+      <span class="detail-value" id="age-display">—</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Location</span>
+      <span class="detail-value">Uttara, Dhaka</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Hometown</span>
+      <span class="detail-value">Ishwarganj, Mymensingh</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">University</span>
+      <span class="detail-value">IUT, Gazipur</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Email</span>
+      <span class="detail-value">shmihad40@gmail.com</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <div class="section-inner">
+    <p class="section-tag fade-up">What I work with</p>
+    <h2 class="section-title fade-up">Skills & Tools</h2>
+    <div class="skills-grid">
+
+      <div class="skill-card fade-up">
+        <img src="https://cdn-icons-png.flaticon.com/128/6132/6132222.png" alt="C++">
+        <span>C++</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://cdn-icons-png.flaticon.com/128/5968/5968282.png" alt="Java">
+        <span>Java</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://cdn-icons-png.flaticon.com/128/5968/5968292.png" alt="JavaScript">
+        <span>JavaScript</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://cdn-icons-png.flaticon.com/128/919/919825.png" alt="Node.js">
+        <span>Node.js</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://cdn-icons-png.flaticon.com/128/3459/3459528.png" alt="React">
+        <span>ReactJS</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://cdn-icons-png.flaticon.com/128/5968/5968672.png" alt="Bootstrap">
+        <span>Bootstrap</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://cdn-icons-png.flaticon.com/128/5968/5968242.png" alt="CSS">
+        <span>CSS</span>
+      </div>
+      <div class="skill-card fade-up">
+        <!-- Tailwind CSS logo SVG -->
+        <svg viewBox="0 0 54 33" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#prefix__clip0)">
+            <path fill="#38bdf8" fill-rule="evenodd" d="M27 0C19.8 0 15.3 3.6 13.5 10.8c2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C30.744 13.09 33.808 16.2 40.5 16.2c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C36.756 3.11 33.692 0 27 0zM13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05 2.054.514 3.522 2.004 5.147 3.653C17.244 29.29 20.308 32.4 27 32.4c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C23.256 19.31 20.192 16.2 13.5 16.2z" clip-rule="evenodd"/>
+          </g>
+        </svg>
+        <span>Tailwind</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://img.icons8.com/?size=100&id=90519&format=png&color=000000" alt="Spring Boot" style="background:#6db33f;border-radius:8px;padding:2px;">
+        <span>Spring Boot</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://img.icons8.com/?size=100&id=7I3BjCqe9rjG&format=png&color=000000" alt="Flutter" style="background:#1565C0;border-radius:8px;padding:2px;">
+        <span>Flutter</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://cdn-icons-png.flaticon.com/128/5969/5969229.png" alt="Oracle">
+        <span>Oracle DB</span>
+      </div>
+      <div class="skill-card fade-up">
+        <!-- MongoDB leaf icon in color -->
+        <svg width="44" height="44" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#47a248" d="M17.193 9.555c-1.264-5.58-4.252-7.243-4.573-8.227-.02-.058-.04-.116-.054-.176-.003-.017-.003-.03-.005-.044v-.04c-.037-.326-.275-.577-.563-.577-.288 0-.526.25-.563.577v.04c-.002.014-.002.027-.005.044-.014.06-.034.118-.054.176-.321.984-3.309 2.647-4.573 8.227-.59 2.605-.57 4.858-.307 6.728.082.594.17 1.15.266 1.652.354 1.86.75 3.12 1.005 3.8.224.594.682.923 1.231.923s1.008-.33 1.232-.923c.255-.68.65-1.94 1.005-3.8.096-.502.184-1.058.266-1.652.263-1.87.283-4.123-.307-6.728z"/>
+        </svg>
+        <span>MongoDB</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://img.icons8.com/color/48/000000/visual-studio-code-2019.png" alt="VS Code">
+        <span>VS Code</span>
+      </div>
+      <div class="skill-card fade-up">
+        <img src="https://img.icons8.com/color/48/000000/intellij-idea.png" alt="IntelliJ">
+        <span>IntelliJ</span>
+      </div>
+      <div class="skill-card fade-up">
+        <!-- Express.js icon -->
+        <svg width="44" height="44" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#eee" d="M126.67 98.44c-4.56 1.16-7.38.05-9.91-3.75-5.68-8.51-11.95-16.63-18-24.9-.78-1.07-1.59-2.12-2.6-3.45C89 73.51 82.85 81.53 76.99 89.95c-2.23 3.23-4.71 4.66-8.75 3.63l26.28-36.48-24.46-33.37c4.36-.89 7.23-.41 9.93 3.45 5.83 8.52 12.26 16.63 18.67 25.21 6.45-8.55 12.8-16.67 18.8-25.11 2.6-3.72 5.37-5.11 9.88-3.48l-13.4 18.81-11.18 15.67C107.1 64.92 116.85 81.06 126.67 98.44zM1.33 61.74c.72-3.61 1.2-7.29 2.2-10.83 6-21.43 30.6-30.34 47.5-17.06 7.09 5.62 10.31 13.46 11.06 22.55.21 2.63.14 5.29.19 7.94H9.5c-.63 16.73 10.56 27.94 26.84 27.22 9.1-.4 16.78-4.24 22.5-11.54 1.4-1.79 2.7-2.63 4.94-1.52-2.37 4.43-5.5 8.1-9.63 10.97-18.23 12.67-44.52 6.43-51.75-16.86-.79-2.66-1.17-5.43-1.74-8.15-.01-1.04-.01-2.08-.01-3.12zm9.12-2.5h50.6c-.34-17.06-11.47-28.89-24.88-28.57-14.64.35-25.4 12.02-25.72 28.57z"/>
+        </svg>
+        <span>Express.js</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <div class="section-inner">
+    <p class="section-tag fade-up">What I've built</p>
+    <h2 class="section-title fade-up">Projects</h2>
+    <div class="projects-grid">
+
+      <div class="project-card fade-up">
+        <div class="project-img-wrap">
+          <img src="https://mihadcse.github.io/thumbnail.png" alt="Secure Task Management" class="project-img" onerror="this.style.display='none'">
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Secure Task Management System</h3>
+          <p class="project-desc">A secure task management system using Node.js, Express.js, MongoDB, and JWT authentication.</p>
+          <div class="project-links">
+            <a href="https://github.com/mihadcse/Secure_Task_Management_System" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              GitHub
+            </a>
+            <a href="https://youtu.be/EJHRTrSXjNk?si=rAAS29wVfKl8dydO" target="_blank" rel="noopener" class="project-link yt">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              Demo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card fade-up">
+        <div class="project-img-wrap">
+          <img src="https://mihadcse.github.io/career_sync.png" alt="Career Sync" class="project-img" onerror="this.style.display='none'">
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Career Sync</h3>
+          <p class="project-desc">A MERN-based job portal where companies can post jobs and job seekers can apply. Team project.</p>
+          <div class="project-links">
+            <a href="https://github.com/mihadcse/Career_Sync" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              GitHub
+            </a>
+            <a href="https://youtu.be/kMB9uJOQhzA?si=l4K3d6rQZxx-jWg_" target="_blank" rel="noopener" class="project-link yt">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              Demo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card fade-up">
+        <div class="project-img-wrap">
+          <img src="https://mihadcse.github.io/clearaid.png" alt="ClearAid" class="project-img" onerror="this.style.display='none'">
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">ClearAid</h3>
+          <p class="project-desc">A Firebase-powered donation platform for NGOs to manage donation programs. Team project.</p>
+          <div class="project-links">
+            <a href="https://github.com/nrzn77/altruistic" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              GitHub
+            </a>
+            <a href="https://youtu.be/CZpSJvk2IbM?si=qeOiEd8yF4JYwXc2" target="_blank" rel="noopener" class="project-link yt">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              Demo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card fade-up">
+        <div class="project-img-wrap">
+          <img src="https://mihadcse.github.io/bookplango.png" alt="BookPlanGo" class="project-img" onerror="this.style.display='none'">
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">BookPlanGo</h3>
+          <p class="project-desc">A Java app to plan and manage book reading schedules efficiently. Team project.</p>
+          <div class="project-links">
+            <a href="https://github.com/mihadcse/BookPlanGo" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card fade-up">
+        <div class="project-img-wrap">
+          <img src="https://mihadcse.github.io/pokedex.png" alt="POKEDEX" class="project-img" onerror="this.style.display='none'">
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">POKEDEX</h3>
+          <p class="project-desc">A Java app for Pokémon fans to manage and browse their Pokémon collection.</p>
+          <div class="project-links">
+            <a href="https://github.com/mihadcse/POKEDEX" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card fade-up">
+        <div class="project-img-wrap">
+          <img src="https://mihadcse.github.io/spaceshooter.png" alt="Space Shooter" class="project-img" onerror="this.style.display='none'">
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Space Shooter</h3>
+          <p class="project-desc">A 2D space shooter game built using C++ and SFML. Team project.</p>
+          <div class="project-links">
+            <a href="https://github.com/mihadcse/OOP_LAB_PROJECT_2_1-SPACE_SHOOTER" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              GitHub
+            </a>
+            <a href="https://youtu.be/vbWuK4hSrFo?si=q8i3rPEmLQJFXjs1" target="_blank" rel="noopener" class="project-link yt">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              Demo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card fade-up">
+        <div class="project-img-wrap">
+          <img src="https://mihadcse.github.io/b.png" alt="Bengal's Air Assault" class="project-img" onerror="this.style.display='none'">
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Bengal's Air Assault</h3>
+          <p class="project-desc">A 2D plane shooting game built using C++ and SFML. Team project.</p>
+          <div class="project-links">
+            <a href="https://github.com/mihadcse/Bengal-s-Air-Assault" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CONNECT ── -->
+<section id="connect">
+  <div class="section-inner">
+    <div class="connect-wrap">
+      <p class="section-tag fade-up" style="justify-content:center;">Let's talk</p>
+      <h2 class="section-title fade-up" style="margin-bottom:1rem;">Get in Touch</h2>
+      <p class="fade-up" style="color:var(--muted);margin-bottom:0.5rem;">Open to collaboration, projects, and new opportunities.</p>
+      <a href="mailto:shmihad40@gmail.com" class="connect-email fade-up">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        shmihad40@gmail.com
+      </a>
+      <div class="social-row fade-up">
+        <a href="https://www.linkedin.com/in/mihadcse/" target="_blank" rel="noopener" class="social-btn li">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/mihadcse" target="_blank" rel="noopener" class="social-btn gh">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </a>
+        <a href="https://www.youtube.com/@SyedHuzzatullahMihad" target="_blank" rel="noopener" class="social-btn yt">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          YouTube
+        </a>
+        <a href="https://www.facebook.com/syedhuzzatullah.mihad" target="_blank" rel="noopener" class="social-btn fb">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Facebook
+        </a>
+        <a href="https://www.instagram.com/sh_mihad/" target="_blank" rel="noopener" class="social-btn ig">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </a>
+      </div>
+      <div class="visitor-row fade-up">
+        <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fmihadcse.github.io%2F">
+          <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fmihadcse.github.io%2F&label=Total%20Visits&labelColor=%23060b14&countColor=%2300d4ff" alt="Visitor Count" style="border-radius:50px;height:28px;" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COPYRIGHT ── -->
+<div class="copyright">
+  © <span id="year"></span> Syed Huzzatullah Mihad. All rights reserved.
+</div>
+
+<script>
+  // ── Age calc
+  (function() {
+    const birth = new Date(2001, 9, 7);
+    const now = new Date();
+    let y = now.getFullYear() - birth.getFullYear();
+    let m = now.getMonth() - birth.getMonth();
+    if (m < 0) { y--; m += 12; }
+    document.getElementById('age-display').textContent = y + ' yrs ' + m + ' mo';
+  })();
+
+  // ── Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ── Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('show');
+  });
+
+  function closeMobile() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('show');
+  }
+
+  // ── Scroll animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), 80);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach((el, i) => {
+    el.style.transitionDelay = (i % 6) * 60 + 'ms';
+    observer.observe(el);
+  });
+
+  // ── Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ── Active nav highlight
+  const sections = ['hero','skills','projects','connect'];
+  const navAs = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(id => {
+      const sec = document.getElementById(id);
+      if (sec && window.scrollY >= sec.offsetTop - 100) current = id;
+    });
+    navAs.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+</script>
+</body>
 </html>
